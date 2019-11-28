@@ -169,7 +169,7 @@ pipeline {
                         openshift.selector('svc', "${APPLICATION_NAME}").delete("--ignore-not-found")
                         openshift.selector('route', "${APPLICATION_NAME}").delete("--ignore-not-found")                     
                         
-                        def app = openshift.newApp("${APPLICATION_NAME}:${DEV_TAG}", "-e=${DISCOVERY_URL_ENV}");
+                        def app = openshift.newApp("${APPLICATION_NAME}:${DEV_TAG}", "-e=${DISCOVERY_URL_ENV}", "-l istio=${APPLICATION_NAME}", "-p istio=${APPLICATION_NAME}");
                         def dc = openshift.selector("dc", "${APPLICATION_NAME}");
                         while (dc.object().spec.replicas != dc.object().status.availableReplicas) {
                             println("Replicas - spec: [${dc.object().spec.replicas}] - available: [${dc.object().status.availableReplicas}]")
