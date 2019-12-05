@@ -180,7 +180,7 @@ pipeline {
                         println("Service: [${APPLICATION_NAME}] needs route: [${needs_route}]");
                         svc_needs_route?.get(APPLICATION_NAME)?.call(app, APPLICATION_NAME, DEV_PROJECT);
 			
-			def app_svc = openshift.selector('svc', "${service_name}");
+			def app_svc = openshift.selector('svc', "${APPLICATION_NAME}");
                         def service_port = app_svc.object().spec.ports.port[0];
 			
 			app_svc.object().spec.ports['name']="http-${service_port}";
