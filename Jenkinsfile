@@ -12,7 +12,7 @@ openshift.withCluster() {
   env.PROD_TAG = "latestProd"
   env.DNS_SUFFIX = "3.132.160.219.xip.io"
 
-  env.FORCE_RECREATE_DEV = "false"
+  env.FORCE_RECREATE_DEV = "true"
   
   Closure create_route = { oc_app, String service_name, String project ->
                             def app_svc = openshift.selector('svc', "${service_name}");
@@ -155,13 +155,13 @@ pipeline {
             openshift.withCluster() {
                 openshift.withProject(env.DEV_PROJECT) {
                     services_bc = services_bc_lst.findAll{ svc -> !openshift.selector("dc", svc).exists() } as Set;
-					println("Services to recreate[${FORCE_RECREATE_DEV}]: [${services_bc}]");
-					
+                    
+		    println("Services to recreate[${FORCE_RECREATE_DEV}]: [${services_bc}]");
                     if(FORCE_RECREATE_DEV.toBoolean()) {
                         services_bc.addAll(services_bc_lst);
                     }
 					
-					println("Services to recreate[${FORCE_RECREATE_DEV}]: [${services_bc}]");
+                    println("Services to recreate[${FORCE_RECREATE_DEV}]: [${services_bc}]");
                     
                     services_bc.each { APPLICATION_NAME -> 
                         println("Deploy application: [${APPLICATION_NAME}] to development");
@@ -178,8 +178,13 @@ pipeline {
                         
                         def needs_route = svc_needs_route.containsKey(APPLICATION_NAME);
                         println("Service: [${APPLICATION_NAME}] needs route: [${needs_route}]");
-                        
                         svc_needs_route?.get(APPLICATION_NAME)?.call(app, APPLICATION_NAME, DEV_PROJECT);
+			
+			def app_svc = openshift.selector('svc', "${service_name}");
+                        def service_port = app_svc.object().spec.ports.port[0];
+			
+			app_svc.object().spec.ports['name']='http-${service_port}';
+			openshift.apply(app_svc);
                     }
                  }
               }
