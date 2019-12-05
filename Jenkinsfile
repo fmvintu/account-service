@@ -10,7 +10,7 @@ openshift.withCluster() {
   env.DEV_TAG = "latest"
   env.PROD_PROJECT = "spring-cloud-demo"
   env.PROD_TAG = "latestProd"
-  env.DNS_SUFFIX = "3.134.70.57.xip.io"
+  env.DNS_SUFFIX = "3.132.160.219.xip.io"
 
   env.FORCE_RECREATE_DEV = "false"
   
