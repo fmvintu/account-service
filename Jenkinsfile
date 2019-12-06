@@ -12,7 +12,7 @@ openshift.withCluster() {
   env.PROD_TAG = "latestProd"
   env.DNS_SUFFIX = "3.132.160.219.xip.io"
 
-  env.FORCE_RECREATE_DEV = "true"
+  env.FORCE_RECREATE_DEV = "false"
   
   Closure create_route = { oc_app, String service_name, String project ->
                             def app_svc = openshift.selector('svc', "${service_name}");
