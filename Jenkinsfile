@@ -183,7 +183,7 @@ pipeline {
 			def app_svc = openshift.selector('svc', "${APPLICATION_NAME}");
                         def service_port = app_svc.object().spec.ports.port[0];
 			
-			app_svc.object().spec.ports.name="http-${service_port}";
+			app_svc.object().spec.ports.name[0]="http-${service_port}";
 			openshift.apply(app_svc);
                     }
                  }
