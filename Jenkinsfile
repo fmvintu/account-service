@@ -184,9 +184,11 @@ pipeline {
 
 			println("Verbose from here!");
                         openshift.verbose();
-			def service_port = app_svc.spec.ports.port[0];
-			
-			app_svc.spec.ports.name[0]="http-${service_port}";
+			def service_port = app_svc.spec.ports[0].port;
+			def service_name = app_svc.spec.ports[0].name;
+			println("Service - Name: [${service_name}] Port: [${service_port}]");
+			    
+			app_svc.spec.ports[0].name="http-${service_port}";
 			println("Printing: app_svc");
 			echo "${app_svc}";
 			
