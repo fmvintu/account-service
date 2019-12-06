@@ -24,7 +24,7 @@ openshift.withCluster() {
                             oc_app.narrow("svc").expose("--name=${service_name}", "--port=${service_port}", "--hostname=${service_route}");
                         }
 	
-  Closure patch_service_port_name = { String service_name ->
+  patch_service_port_name = { String service_name ->
 			def app_svc = openshift.selector("svc/${service_name}").object();
 
 			def service_port = app_svc.spec.ports[0].port;
