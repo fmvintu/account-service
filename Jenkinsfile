@@ -28,10 +28,10 @@ openshift.withCluster() {
 			def app_svc = openshift.selector("svc/${service_name}").object();
 
 			def service_port = app_svc.spec.ports[0].port;
-			def service_name = app_svc.spec.ports[0].name;
+			def service_port_name = app_svc.spec.ports[0].name;
 	  		app_svc.spec.ports[0].name="http-${service_port}";
 	  		def new_service_port_name = app_svc.spec.ports[0].name;
-	  		println("Service - Name: [${service_name}] Port: [${service_port}] New Name: [${new_service_port_name}]");
+	  		println("Service - Name: [${service_port_name}] Port: [${service_port}] New Name: [${new_service_port_name}]");
 			openshift.apply(app_svc);	
   }
 	
